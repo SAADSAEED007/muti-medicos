@@ -1,0 +1,1691 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Multi Medicos - Pharmacy Management System</title>
+    <link href="assets/dist/css/bundle.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/enterprise.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <div class="splash loading">
+        <img src="public/Multi Medicos Pharmacy Logo.png" alt="Multi Medicos" style="width:360px;height:72px;max-width:80vw;object-fit:cover;object-position:center;" />
+        <h1 class="pull-right pt-3"><i class="fa fa-spinner fa-spin"></i> Please wait...</h1>
+    </div>
+    <div id="login">
+        <div class="login-box">
+            <div id="load" class="login-box-body">
+                <center><img src="public/Multi Medicos Pharmacy Logo.png" alt="Multi Medicos" style="width:200px;height:40px;object-fit:cover;object-position:center;" /></center>
+                <form id="account">
+                    <div class="form-group">
+                        <input type="text" placeholder="Username" name="username" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" placeholder="Password" name="password" class="form-control">
+                    </div>
+                    <button type="submit" class="btn btn-block btn-default">Login</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div id="main_app">
+        <nav class="enterprise-nav">
+            <div class="enterprise-brand">
+                <img src="public/Multi Medicos Pharmacy Logo.png" alt="Multi Medicos" />
+            </div>
+            <div class="enterprise-menu">
+                <button class="nav-tab active" data-view="pos"><i class="fa fa-shopping-cart"></i> Point of Sale</button>
+                <button class="nav-tab" data-view="dashboard"><i class="fa fa-tachometer"></i> Dashboard</button>
+                <button class="nav-tab" data-view="purchases"><i class="fa fa-truck"></i> Purchases</button>
+                <button class="nav-tab" data-view="suppliers"><i class="fa fa-building"></i> Suppliers</button>
+                <button class="nav-tab" data-view="customers_khata"><i class="fa fa-book"></i> Customer Khata</button>
+                <button class="nav-tab" data-view="expenses"><i class="fa fa-file-text-o"></i> Expenses</button>
+                <button class="nav-tab" data-view="reports"><i class="fa fa-bar-chart"></i> Reports</button>
+            </div>
+        </nav>
+        <div class="container">
+            <div class="row top-action-bar">
+                <div class="col-md-6">
+                    <div class="button-list pull-left m-l-10">
+                        <div class="btn-group p_one">
+                            <button id="productModal" data-toggle="modal" data-target="#Products" type="button" class="btn btn-success waves-effect waves-light">
+                                <span class="btn-label"><i class="  glyphicon glyphicon-barcode"></i> </span> Products
+                            </button>
+                            <button id="newProductModal" data-toggle="modal" data-target="#newProduct" type="button" class="btn btn-warning waves-effect waves-light">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        </div>
+                        <div class="btn-group p_two">
+                            <button id="categoryModal" data-toggle="modal" data-target="#Categories" type="button" class="btn btn-success waves-effect waves-light">
+                                <span class="btn-label"><i class="glyphicon glyphicon-th"></i> </span> Categories
+                            </button>
+                            <button id="newCategoryModal" data-toggle="modal" data-target="#newCategory" type="button" class="btn btn-warning waves-effect waves-light">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        </div>
+                        <button id="viewRefOrders" data-toggle="modal" data-target="#holdOrdersModal" type="button" class="btn btn-info waves-effect waves-light">
+                            <span class="btn-label"><i class="fa fa-shopping-basket"></i> </span> Open Tabs
+                        </button>
+                        <button id="viewCustomerOrders" data-toggle="modal" data-target="#customerModal" type="button" onclick="$(this).getCustomerOrders()" class="btn btn-info waves-effect waves-light">
+                            <span class="btn-label"><i class="fa fa-shopping-cart"></i></span> Orders
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="button-list pull-right">
+                        <button id="settings" data-toggle="modal" data-target="#settingsModal" type="button" class="btn btn-success waves-effect waves-light p_five">
+                            <i class="glyphicon glyphicon-cog"></i>
+                        </button>
+                        <button id="transactions" type="button" class="btn btn-success waves-effect waves-light p_three">
+                            <span class="btn-label"><i class="  glyphicon glyphicon-credit-card"></i> </span>
+                            Transactions
+                        </button>
+                        <button id="pointofsale" type="button" class="btn btn-success waves-effect waves-light">
+                            <span class="btn-label"><i class="  glyphicon glyphicon-shopping-cart"></i> </span> Point of
+                            Sale
+                        </button>
+                        <div class="btn-group p_four">
+                            <button id="usersModal" data-toggle="modal" data-target="#Users" type="button" class="btn btn-success waves-effect waves-light">
+                                <span class="btn-label"><i class="  glyphicon glyphicon-user"></i> </span> Users
+                            </button>
+                            <button id="add-user" data-toggle="modal" type="button" class="btn btn-warning waves-effect waves-light">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        </div>
+                        <button type="button" title="My Profile" class="btn btn-default waves-effect waves-light" id="cashier">
+                            <span class="btn-label"><i class="glyphicon glyphicon-user"></i> </span> <span id="loggedin-user"></span>
+                        </button>
+                        <button id="log-out" type="button" class="btn btn-warning waves-effect waves-light">
+                            <i class="glyphicon glyphicon-log-out"></i> <span>Log out</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div id="transactions_view">
+                <div class="container">
+                    <div class="row text-center m-t-20" id="totals">
+                        <div id="total_sales" class="col-md-3 py-2 bg-success">
+                            <h5>SALES</h5>
+                            <span id="counter">0</span>
+                        </div>
+                        <div id="total_transactions" class="col-md-3 py-2 bg-warning">
+                            <h5>TRANSACTIONS</h5>
+                            <span id="counter">0</span>
+                        </div>
+                        <div id="total_items" class="col-md-3 py-2 bg-info">
+                            <h5>ITEMS SOLD</h5>
+                            <span id="counter">0</span>
+                        </div>
+                        <div id="total_products" class="col-md-3 py-2 bg-success">
+                            <h5>PRODUCTS</h5>
+                            <span id="counter">0</span>
+                        </div>
+                    </div>
+                    <div class="row p-t-10 p-b-10 bg-white m-t-10 m-b-20">
+                        <h3 class="col-md-2">Transactions</h3>
+                        <div class="col-md-2">
+                            <div class="input-group">
+                                <span class="input-group-addon" id="till-addon">Till</span>
+                                <select id="tills" class="form-control" aria-describedby="till-addon">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="input-group">
+                                <span class="input-group-addon" id="cashier-addon">Cashier</span>
+                                <select id="users" class="form-control" aria-describedby="cashier-addon">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="input-group">
+                                <span class="input-group-addon" id="status-addon">Status</span>
+                                <select id="status" class="form-control" aria-describedby="">
+                                    <option value="1">Completed Sales</option>
+                                    <option value="0">Held Orders</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <span class="input-group-addon" id="date-addon">Date</span>
+                                <div id="reportrange">
+                                    <i class="fa fa-calendar"></i>&nbsp;
+                                    <span></span>&nbsp;<i class="fa fa-caret-down"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 bg-white" id="productSales">
+                            <div class="card-box">
+                                <div class="card-title">
+                                    <h4>Products</h4>
+                                </div>
+                                <div class="card-body">
+                                    <table class="table tablesaw-enhanced table-responsive" id="productsSold">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Sold</th>
+                                                <th>Available</th>
+                                                <th>Sales</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="product_sales"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8" id="transactionDetails">
+                            <div class="card-box">
+                                <div class="card-title">
+                                    <h4>Transaction Details</h4>
+                                </div>
+                                <div class="card-body">
+                                    <table class="table table-striped table-bordered table-responsive" id="transactionList">
+                                        <thead>
+                                            <tr>
+                                                <th>Invoice</th>
+                                                <th>Date</th>
+                                                <th>Customer</th>
+                                                <th>Total</th>
+                                                <th>Paid</th>
+                                                <th>Due</th>
+                                                <th>Change</th>
+                                                <th>Method</th>
+                                                <th>Till</th>
+                                                <th>Cashier</th>
+                                                <th>View</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="transaction_list"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="pos_view">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card-box" id="card-box">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="input-group">
+                                            <select name="" id="customer" class="form-control">
+                                            </select>
+                                            <span class="input-group-btn">
+                                                <button id="newCustomerModal" data-toggle="modal" data-target="#newCustomer" class="btn btn-success" title="New Customer"><i class="fa fa-plus"></i></button>
+                                                <button id="editCustomerModal" class="btn btn-warning" title="Edit Customer"><i class="fa fa-pencil"></i></button>
+                                            </span>
+                                        </div>
+                                        <div id="customer_khata_badge" style="display:none;"></div>
+                                    </div>
+                                    <div class="col-md-12 m-t-5">
+                                        <form action="" id="searchBarCode">
+                                            <div class="input-group">
+                                                <input type="text" required id="skuCode" name="skuCode" class="form-control number-input" placeholder="Scan barcode or type the number then hit enter" aria-label="barcode" aria-describedby="basic-addon2">
+                                                <span class="input-group-btn">
+                                                    <button type="submit" class="btn btn-default search-barcode-btn"><i class="glyphicon glyphicon-ok"></i></button>
+                                                </span>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="row p-t-10" id="cartTable">
+                                    <div class="card-box">
+                                        <div class="card-title">
+                                            <div class="row">
+                                                <div class="col-md-1"><strong>#</strong></div>
+                                                <div class="col-md-3"><strong>Item</strong></div>
+                                                <div class="col-md-3"><strong>Qty</strong></div>
+                                                <div class="col-md-3"><strong>Price</strong></div>
+                                                <div class="col-md-1"><button onclick="$(this).cancelOrder()" class="btn btn-light btn-xs"><i class="fa fa-times"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-body"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="pos-summary-card">
+                                <div class="row pos-summary-row">
+                                    <div class="col-xs-3 summary-item">
+                                        <span class="summary-label">Items</span>
+                                        <span class="summary-value" id="total">0</span>
+                                    </div>
+                                    <div class="col-xs-3 summary-item">
+                                        <span class="summary-label">Subtotal</span>
+                                        <span class="summary-value" id="price">0.00</span>
+                                    </div>
+                                    <div class="col-xs-3 summary-item">
+                                        <span class="summary-label">Discount</span>
+                                        <input class="form-control input-sm" type="number" id="inputDiscount" min="0" placeholder="0.00" oninput="$(this).calculateCart();">
+                                    </div>
+                                    <div class="col-xs-3 summary-item total-summary-item">
+                                        <span class="summary-label">Gross Total</span>
+                                        <span class="summary-total-value" id="gross_price">0.00</span>
+                                        <small class="tax-info-tag">Tax <span id="taxInfo">0</span>%</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pos-action-buttons pull-right">
+                                <button onclick="$(this).submitDueOrder(3);" type="button" class="btn btn-pos-print waves-effect" title="Print Receipt">
+                                    <i class="fa fa-print"></i>
+                                </button>
+                                <button onclick="$(this).cancelOrder()" type="button" class="btn btn-pos-cancel waves-effect waves-light">
+                                    <i class="fa fa-ban"></i> Cancel
+                                </button>
+                                <button type="button" id="hold" class="btn btn-pos-hold waves-effect waves-light">
+                                    <i class="fa fa-hand-paper-o"></i> Hold
+                                </button>
+                                <button type="button" id="payButton" class="btn btn-pos-pay waves-effect waves-light">
+                                    <i class="fa fa-check-circle"></i> Pay
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card-box">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <input type="text" id="search" class="form-control" placeholder="Search product by name or sku">
+                                </div>
+                                <div class="col-md-6">
+                                    <select id="categories" class="form-control">
+                                    </select>
+                                </div>
+                            </div>
+                            <hr>
+                            <div id="parent" class="product-cards-grid">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- ENTERPRISE VIEWS -->
+            <!-- ========================================== -->
+
+            <!-- DASHBOARD VIEW -->
+            <div id="dashboard_view" class="enterprise-view">
+                <div class="metrics-grid">
+                    <div class="metric-card warning-card">
+                        <h6>Customer Receivables (Khata)</h6>
+                        <div class="metric-value text-warning" id="dash_receivables">PKR 0.00</div>
+                        <div class="metric-sub">Total credit owed by customers</div>
+                    </div>
+                    <div class="metric-card danger-card">
+                        <h6>Supplier Payables</h6>
+                        <div class="metric-value text-danger" id="dash_payables">PKR 0.00</div>
+                        <div class="metric-sub">Outstanding distributor balances</div>
+                    </div>
+                    <div class="metric-card success-card">
+                                    <h6>Cash in Till</h6>
+                        <div class="metric-value text-success" id="dash_cash">PKR 0.00</div>
+                        <div class="metric-sub">Current physical drawer balance</div>
+                    </div>
+                    <div class="metric-card info-card">
+                        <h6>Today's Collections</h6>
+                        <div class="metric-value text-info" id="dash_collections">PKR 0.00</div>
+                        <div class="metric-sub">Cash sales & khata collected today</div>
+                    </div>
+                    <div class="metric-card">
+                        <h6>Today's Supplier Payments</h6>
+                        <div class="metric-value" id="dash_supplier_payments">PKR 0.00</div>
+                        <div class="metric-sub">Payments made to suppliers today</div>
+                    </div>
+                    <div class="metric-card warning-card">
+                        <h6>Today's Expenses</h6>
+                        <div class="metric-value text-warning" id="dash_expenses">PKR 0.00</div>
+                        <div class="metric-sub">Operating expenditures today</div>
+                    </div>
+                    <div class="metric-card danger-card">
+                        <h6>Overdue Invoices</h6>
+                        <div class="metric-value text-danger" id="dash_overdue">0</div>
+                        <div class="metric-sub">Invoices past supplier due date</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SUPPLIERS VIEW -->
+            <div id="suppliers_view" class="enterprise-view">
+                <div class="enterprise-card">
+                    <div class="card-header-flex">
+                        <h3><i class="fa fa-building text-success"></i> Supplier Management</h3>
+                        <button class="btn btn-success" id="btn_add_supplier"><i class="fa fa-plus"></i> Add Supplier</button>
+                    </div>
+                    <div class="toolbar-flex">
+                        <div class="search-input-group">
+                            <i class="fa fa-search"></i>
+                            <input type="text" id="supplier_search" class="form-control" placeholder="Search supplier by name, contact, phone..." />
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="enterprise-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Company & Contact</th>
+                                    <th>Phone / Email</th>
+                                    <th>Terms</th>
+                                    <th>Outstanding Payable</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="suppliers_table_body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PURCHASES VIEW -->
+            <div id="purchases_view" class="enterprise-view">
+                <div class="enterprise-card">
+                    <div class="card-header-flex">
+                        <h3><i class="fa fa-truck text-success"></i> Medicine Purchases</h3>
+                        <button class="btn btn-success" id="btn_new_purchase"><i class="fa fa-plus"></i> New Purchase</button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="enterprise-table">
+                            <thead>
+                                <tr>
+                                    <th>Invoice #</th>
+                                    <th>Supplier</th>
+                                    <th>Invoice Date</th>
+                                    <th>Status</th>
+                                    <th>Payment</th>
+                                    <th>Total</th>
+                                    <th>Outstanding</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="purchases_table_body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CUSTOMERS KHATA VIEW -->
+            <div id="customers_khata_view" class="enterprise-view">
+                <div class="enterprise-card">
+                    <div class="card-header-flex">
+                        <h3><i class="fa fa-book text-success"></i> Customer Khata / Udhaar</h3>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="enterprise-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Customer Name</th>
+                                    <th>Phone</th>
+                                    <th>Credit Limit</th>
+                                    <th>Current Receivable</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="khata_table_body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EXPENSES VIEW -->
+            <div id="expenses_view" class="enterprise-view">
+                <div class="enterprise-card">
+                    <div class="card-header-flex">
+                        <h3><i class="fa fa-file-text-o text-success"></i> Operating Expenses</h3>
+                        <button class="btn btn-success" id="btn_add_expense"><i class="fa fa-plus"></i> Add Expense</button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="enterprise-table">
+                            <thead>
+                                <tr>
+                                    <th>Number</th>
+                                    <th>Date</th>
+                                    <th>Category</th>
+                                    <th>Description</th>
+                                    <th>Method</th>
+                                    <th>Amount</th>
+                                    <th>Recorded By</th>
+                                </tr>
+                            </thead>
+                            <tbody id="expenses_table_body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- REPORTS VIEW -->
+            <div id="reports_view" class="enterprise-view">
+                <div class="enterprise-card">
+                    <div class="card-header-flex">
+                        <h3><i class="fa fa-bar-chart text-success"></i> Inventory & Batch Stock Report</h3>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="enterprise-table">
+                            <thead>
+                                <tr>
+                                    <th>Barcode</th>
+                                    <th>Medicine Name</th>
+                                    <th>Supplier</th>
+                                    <th>Expiry Date</th>
+                                    <th>Current Stock</th>
+                                    <th>Selling Price</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="rep_inventory_tbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="dueModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="mySmallModalLabel">Hold Order
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <form action="">
+                            <input type="text" id="refNumber" placeholder="Enter a reference" class="form-control">
+                        </form>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <button data-val="1" data-isdue="true" class="btn btn-success btn-lg btn-block keypad-btn">1</button>
+                            </div>
+                            <div class="col-md-4">
+                                <button data-val="2" data-isdue="true" class="btn btn-success btn-lg btn-block keypad-btn">2</button>
+                            </div>
+                            <div class="col-md-4">
+                                <button data-val="3" data-isdue="true" class="btn btn-success btn-lg btn-block keypad-btn">3</button>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <button data-val="4" data-isdue="true" class="btn btn-success btn-lg btn-block keypad-btn">4</button>
+                            </div>
+                            <div class="col-md-4">
+                                <button data-val="5" data-isdue="true" class="btn btn-success btn-lg btn-block keypad-btn">5</button>
+                            </div>
+                            <div class="col-md-4">
+                                <button data-val="6" data-isdue="true" class="btn btn-success btn-lg btn-block keypad-btn">6</button>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <button data-val="7" data-isdue="true" class="btn btn-success btn-lg btn-block keypad-btn">7</button>
+                            </div>
+                            <div class="col-md-4">
+                                <button data-val="8" data-isdue="true" class="btn btn-success btn-lg btn-block keypad-btn">8</button>
+                            </div>
+                            <div class="col-md-4">
+                                <button data-val="9" data-isdue="true" class="btn btn-success btn-lg btn-block keypad-btn">9</button>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <button data-val="del" class="btn btn-warning btn-lg btn-block">⌫</button>
+                            </div>
+                            <div class="col-md-4">
+                                <button data-val="0" data-isdue="true" class="btn btn-success btn-lg btn-block keypad-btn">0</button>
+                            </div>
+                            <div class="col-md-4">
+                                <button data-val="ac" data-isdue="true" class="btn btn-danger btn-lg btn-block keypad-btn">AC</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" onclick="$(this).submitDueOrder(0);" class="btn btn-primary btn-block btn-lg waves-effect waves-light">Hold Order</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+        <!--  Modal content for the above example -->
+        <div id="paymentModel" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="myLargeModalLabel">Payment</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="list-group">
+                                    <a href="javascript:void(0)" id="cash" data-payment-method="Cash" data-payment-type="1" class="list-group-item active">
+                                        Cash
+                                    </a>
+                                    <a href="javascript:void(0)" id="card" data-payment-method="Card" data-payment-type="3" class="list-group-item">Card</a>
+                                    <a href="javascript:void(0)" id="creditPaymentBtn" data-payment-method="Credit / Khata" data-payment-type="4" class="list-group-item"><i class="fa fa-book text-warning"></i> Credit / Khata</a>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="input-group">
+                                    <span class="input-group-addon" id="basic-addon3">Price <span id="price_curr"></span></span>
+                                    <input id="payablePrice" readonly type="text" class="form-control" aria-describedby="basic-addon3">
+                                </div>
+                                <br>
+                                <div class="input-group">
+                                    <span class="input-group-addon" id="basic-addon3">Payment <span id="payment_curr"></span> </span>
+                                    <input type="text" placeholder="0.0" class="form-control" id="paymentText" aria-describedby="basic-addon3" readonly>
+                                    <input type="hidden" class="form-control" id="payment" aria-describedby="basic-addon3">
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-md-9">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <button data-val="1" data-isdue="false" class="btn btn-success btn-lg btn-block keypad-btn">1</button>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <button data-val="2" data-isdue="false" class="btn btn-success btn-lg btn-block keypad-btn">2</button>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <button data-val="3" data-isdue="false" class="btn btn-success btn-lg btn-block keypad-btn">3</button>
+                                            </div>
+                                            <div class="col-md-3"></div>
+                                        </div>
+                                        <br>
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <button data-val="4" data-isdue="false" class="btn btn-success btn-lg btn-block keypad-btn">4</button>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <button data-val="5" data-isdue="false" class="btn btn-success btn-lg btn-block keypad-btn">5</button>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <button data-val="6" data-isdue="false" class="btn btn-success btn-lg btn-block keypad-btn">6</button>
+                                            </div>
+                                            <div class="col-md-3"></div>
+                                        </div>
+                                        <br>
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <button data-val="7" data-isdue="false" class="btn btn-success btn-lg btn-block keypad-btn">7</button>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <button data-val="8" data-isdue="false" class="btn btn-success btn-lg btn-block keypad-btn">8</button>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <button data-val="9" data-isdue="false" class="btn btn-success btn-outline-success btn-lg btn-block keypad-btn">9</button>
+                                            </div>
+                                            <div class="col-md-3"></div>
+                                        </div>
+                                        <br>
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <button data-val="del" class="btn btn-danger btn-lg btn-block keypad-btn">⌫</button>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <button data-val="0" data-isdue="false" class="btn btn-success btn-lg btn-block keypad-btn">0</button>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <button data-val="." data-isdue="false" class="btn btn-warning btn-lg btn-block">.</button>
+                                            </div>
+                                            <div class="col-md-3"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <button data-val="ac" data-isdue="false" class="btn btn-danger btn-block btn-lg keypad-btn">AC</button>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="input-group" id="cardInfo">
+                                    <span class="input-group-addon" id="basic-addon3">Card Info </span>
+                                    <input type="text" class="form-control" id="paymentInfo" aria-describedby="basic-addon3">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="btn btn-primary btn-block btn-lg waves-effect waves-light">Change <span id="change_curr"></span><span id="change"></span> </div>
+                            </div>
+                            <div class="col-md-6">
+                                <button type="button" id="confirmPayment" class="btn btn-success btn-block btn-lg waves-effect waves-light">Confirm
+                                Payment</button>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+        <div id="newCustomer" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="customerModalTitle">New Customer
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <form id="saveCustomer" data-parsley-validate>
+                            <input type="hidden" id="customer_id" name="_id">
+                            <div class="form-group">
+                                <label for="userName">Customer Name*</label>
+                                <input type="text" required="required" name="name" parsley-trigger="change" placeholder="Enter name" class="form-control" id="userName">
+                            </div>
+                            <div class="form-group">
+                                <label for="userName">Customer Phone</label>
+                                <input type="text" name="phone" parsley-trigger="change" placeholder="Enter Phone number" class="form-control" id="phoneNumber">
+                            </div>
+                            <div class="form-group">
+                                <label for="userName">Customer Email</label>
+                                <input type="email" name="email" parsley-trigger="change" placeholder="Enter email address" class="form-control" id="emailAddress">
+                            </div>
+                            <div class="form-group">
+                                <label for="userName">Customer Address</label>
+                                <input type="text" name="address" parsley-trigger="change" placeholder="Enter address" class="form-control" id="userAddress">
+                            </div>
+                            <input id="saveCustomerBtn" type="submit" value="Save Customer" class="btn btn-primary btn-block waves-effect waves-light">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="newProduct" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="mySmallModalLabel">Product
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <form id="saveProduct" encType="multipart/form-data">
+                            <input type="hidden" name="id" id="product_id">
+                            <input type="hidden" name="img" id="img">
+                            <input type="hidden" name="remove" id="remove_img">
+                            <div class="form-group">
+                                <label for="category">Category</label>
+                                <select name="category" class="form-control" id="category"></select>
+                            </div>
+                            <div class="form-group">
+                                <label for="supplier">Supplier</label>
+                                <input type="text" name="supplier" placeholder="Enter supplier name" class="form-control" id="supplier">
+                            </div>
+                            <div class="form-group">
+                                <label for="productName">Product Name</label>
+                                <input type="text" required="required" name="name" parsley-trigger="change" placeholder="Enter a product name" class="form-control" id="productName">
+                            </div>
+                            <div class="form-group">
+                                <label for="barcode">BarCode</label>
+                                <input type="text" required="required" name="barcode" parsley-trigger="change" placeholder="Enter product barcode" class="form-control number-input" id="barcode">
+                            </div>
+                            <div class="form-group">
+                                <label for="product_price">Price</label>
+                                <input type="text" required="required" name="price" placeholder="Price" class="form-control number-input" id="product_price">
+                            </div>
+                            <div class="form-group">
+                                <label for="expirationDate">Expiry Date</label>
+                                <input type="text" name="expirationDate" parsley-trigger="change" placeholder="dd/mm/yyyy" class="form-control" id="expirationDate" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="quantity">Stock</label>
+                                <input type="number" name="quantity" placeholder="Available stock" class="form-control" id="quantity" min="0">
+                            </div>
+                            <div class="form-group">
+                                <label for="quantity">Minimum Stock</label>
+                                <input type="number" name="minStock" placeholder="Minimum Stock" class="form-control" id="minStock" min="1" value="10">
+                            </div>
+                            <div class="form-group">
+                                <label><input type="checkbox" name="stock" id="stock"> Disable stock check </label>
+                            </div>
+                            <div class="form-group">
+                                <label for="imagename"><span id="rmv_img" class="btn btn-xs btn-warning">Remove</span>
+                                Picture </label>
+                                <div id="current_img"></div>
+                                <input type="file" name="imagename" id="imagename">
+                            </div>
+                            <input type="submit" id="submitProduct" class="btn btn-primary btn-block waves-effect waves-light">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="newCategory" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="mySmallModalLabel">Category
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <form id="saveCategory">
+                            <div class="form-group">
+                                <label for="userName">Name</label>
+                                <input id="category_id" type="hidden" name="id">
+                                <input id="categoryName" type="text" required="required" name="name" placeholder="Enter a category name" class="form-control">
+                            </div>
+                            <input type="submit" id="submitCategory" class="btn btn-primary btn-block waves-effect waves-light">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="Products" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="mySmallModalLabel">Products
+                        </h4>
+                    </div>
+                    <div class="modal-body p-20 p-r-40" id="all_products">
+                        <table class="table table-bordered" id="productList">
+                            <thead>
+                                <tr>
+                                    <th>Barcode</th>
+                                    <th>Item</th>
+                                    <th>Name</th>
+                                    <th>Price</th>
+                                    <th>Stock</th>
+                                    <th>Expiry Date</th>
+                                    <th>Category</th>
+                                    <th>Supplier</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="product_list"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="Users" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="mySmallModalLabel">Users
+                        </h4>
+                    </div>
+                    <div class="modal-body p-20 p-r-20" id="all_userss">
+                        <table class="table table-bordered" id="userList">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Username</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="user_list"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="Categories" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="mySmallModalLabel">Categories
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table table-bordered" id="categoryList">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="category_list"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="userModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="mySmallModalLabel">Account Infomarion
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <form id="saveUser" data-parsley-validate>
+                            <input type="hidden" name="id" id="user_id">
+                            <div class="form-group">
+                                <label for="userName">Name*</label>
+                                <input type="text" required="required" name="fullname" parsley-trigger="change" placeholder="Enter name" class="form-control" id="fullname">
+                            </div>
+                            <div class="form-group">
+                                <label for="userName">Username*</label>
+                                <input type="text" name="username" parsley-trigger="change" placeholder="Login Username" class="form-control" id="username">
+                            </div>
+                            <div class="form-group">
+                                <label for="userName">Password</label>
+                                <input type="password" name="password" parsley-trigger="change" placeholder="Password" class="form-control" id="password">
+                            </div>
+                            <div class="form-group">
+                                <label for="userName">Repeat Password</label>
+                                <input type="password" name="pass" parsley-trigger="change" placeholder="Repeat" class="form-control" id="pass">
+                            </div>
+                            <div class="perms">
+                                <h3 class="m-t-20">Permissions</h3>
+                                <hr>
+                                <div class="form-group">
+                                    <span><input type="checkbox" name="perm_products" id="perm_products"> Manage
+                                    Products and Stock </span>
+                                </div>
+                                <div class="form-group">
+                                    <span><input type="checkbox" name="perm_categories" id="perm_categories"> Manage
+                                    Product Categories </span>
+                                </div>
+                                <div class="form-group">
+                                    <span><input type="checkbox" name="perm_transactions" id="perm_transactions"> View
+                                    Transactions </span>
+                                </div>
+                                <div class="form-group">
+                                    <span><input type="checkbox" name="perm_users" id="perm_users"> Manage Users and
+                                    Permissions </span>
+                                </div>
+                                <div class="form-group">
+                                    <span><input type="checkbox" name="perm_settings" id="perm_settings"> Manage
+                                    Settings </span>
+                                </div>
+                            </div>
+                            <input type="submit" class="btn btn-primary btn-block waves-effect waves-light">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="holdOrdersModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="myLargeModalLabel">Open Orders</h4>
+                    </div>
+                    <div class="modal-body">
+                        <input type="text" id="holdOrderInput" placeholder="Search order by reference" class="holdOrderInput form-control">
+                        <div class="holdOrderKeyboard"></div>
+                        <br>
+                        <div class="row" id="renderHoldOrders">
+                            <p>Please wait <span class="dot"></span> </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="customerModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="myLargeModalLabel">Customer Orders</h4>
+                    </div>
+                    <div class="modal-body">
+                        <input type="text" id="holdCustomerOrderInput" placeholder="Search order by customer name" class="holdCustomerOrderInput form-control">
+                        <div class="customerOrderKeyboard"></div>
+                        <br>
+                        <div class="row" id="renderCustomerOrders">
+                            <p>please wait <span class="dot"></span> </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="orderModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button class="btn btn-sm btn-success" onclick="$(this).print()">Print</button> <br> <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    </div>
+                    <div class="modal-body" id="viewTransaction">
+                    </div>
+                    <div class="alert alert-danger">Right-Click and Reload if you get stuck after cancelling a print.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="settingsModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="mySmallModalLabel">Settings
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="row">
+                                <div class="form-group">
+                                    <label for="app">Application</label>
+                                    <select name="app" id="app" class="form-control">
+                                        <option value="Standalone Point of Sale">Standalone Point of Sale</option>
+                                        <option value="Network Point of Sale Terminal">Network Point of Sale Terminal</option>
+                                        <option value="Network Point of Sale Server">Network Point of Sale Server</option>
+                                    </select>
+                                </div>
+                                <form id="net_settings_form">
+                                    <div class="form-group">
+                                        <label for="ip">Server IP Address*</label>
+                                        <input type="text" required="required" placeholder="Enter the IP address of the admin computer." name="ip" class="form-control" id="ip">
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <label for="till">Till Number*</label>
+                                            <input type="text" required="required" placeholder="Enter a number" name="till" class="form-control" id="till">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <div class="form-group">
+                                            <label for="mac">Hardware Identification Number </label>
+                                            <input type="text" required="required" name="mac" class="form-control" id="mac" readonly="readonly">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <input id="save_settings" type="submit" class="btn btn-success btn-block waves-effect waves-light" value="Save Settings">
+                                    </div>
+                                </form>
+                            </div>
+                            <form id="settings_form" encType="multipart/form-data">
+                                <input type="hidden" name="id" id="settings_id">
+                                <input type="hidden" name="img" id="logo_img" value="multi-medicos-logo.png">
+                                <input type="hidden" name="remove" id="remove_logo">
+                                <div class="container">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="userName">Store Name</label>
+                                            <input type="text" required="required" name="store" class="form-control" id="store" placeholder="Pharmacy name" value="Multi Medicos">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="userName">Address Line 1</label>
+                                            <input type="text" required="required" name="address_one" class="form-control" id="address_one" placeholder="Address" value="GreenTown">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="userName">Address Line 2</label>
+                                            <input type="text" required="required" name="address_two" class="form-control" id="address_two" placeholder="City" value="Karachi">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="userName">Contact Number</label>
+                                            <input type="tel" name="contact" class="form-control" id="contact" placeholder="Contact number" value="03196573297">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="userName">Vat Number</label>
+                                            <input type="text" name="tax" parsley-trigger="change" class="form-control number-input" id="tax">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="userName">Currency Symbol</label>
+                                            <input type="text" required="required" name="symbol" class="form-control" id="symbol" minlength="1" maxlength="3" placeholder="PKR" value="PKR">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="userName">Vat Percentage</label>
+                                            <div class="pull-left">
+                                                <div class="col-md-6">
+                                                    <div class="input-group" style="width:130%">
+                                                        <input type="number" min="0" max="100" required="required" name="percentage" class="form-control" id="percentage" value="0">
+                                                        <span class="input-group-addon">%</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br><br>
+                                        <div class="form-group">
+                                            <label><input type="checkbox" name="charge_tax" id="charge_tax"> Charge
+                                            Vat</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <label><input type="checkbox" name="quick_billing" id="quick_billing"> Quick Billing (skip payment confirmation)</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="userName"><span id="rmv_logo" class="btn btn-xs btn-warning">Remove</span> Logo </label>
+                                            <div id="current_logo"></div>
+                                            <input type="file" name="imagename" id="logoname" accept=".jpg,.jpeg,.png,.webp">
+                                            <small class="text-gray">
+                                            Max filesize: <strong>2MB</strong>; Allowed image types:<strong> jpeg, jpg, png or webp</strong></small>
+
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="userName">Receipt Footer</label>
+                                            <textarea name="footer" class="form-control" id="footer">Thank you for shopping at Multi Medicos.</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <input id="save_settings" type="submit" class="btn btn-success btn-block waves-effect waves-light" value="Save Settings">
+                                </div>
+                            </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ========================================== -->
+        <!-- ENTERPRISE MODALS -->
+        <!-- ========================================== -->
+
+        <!-- MODAL: ADD / EDIT SUPPLIER -->
+        <div id="modal_supplier" class="modal fade modal-enterprise" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form id="form_supplier">
+                        <input type="hidden" id="supplier_id_input" />
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title" id="modal_supplier_title">Add Supplier</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Supplier Name <span class="text-danger">*</span></label>
+                                <input type="text" id="supplier_name_input" class="form-control" required placeholder="e.g. ABC Pharma Distributor" />
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label>Phone Number</label>
+                                    <input type="tel" id="supplier_phone_input" class="form-control" placeholder="e.g. 0300 1234567" autocomplete="tel" />
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label>Address <small class="text-muted">(Optional)</small></label>
+                                    <input type="text" id="supplier_address_input" class="form-control" placeholder="Shop, office or warehouse address" />
+                                </div>
+                            </div>
+
+                            <input type="hidden" id="supplier_status_input" value="active" />
+                            <button type="button" class="btn btn-link supplier-advanced-toggle collapsed" data-toggle="collapse" data-target="#supplier_additional_details" aria-expanded="false">
+                                <i class="fa fa-chevron-right"></i> Additional Details
+                            </button>
+                            <div id="supplier_additional_details" class="collapse supplier-additional-details">
+                                <div class="row">
+                                    <div class="col-md-6 form-group">
+                                        <label>Contact Person</label>
+                                        <input type="text" id="supplier_contact_input" class="form-control" placeholder="e.g. Tariq Mehmood" />
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                        <label>Email</label>
+                                        <input type="email" id="supplier_email_input" class="form-control" placeholder="Optional email address" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 form-group">
+                                        <label>Payment Terms</label>
+                                        <input type="text" id="supplier_terms_input" class="form-control" value="Net 30" />
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                        <label>Due Period (Days)</label>
+                                        <input type="number" id="supplier_due_days_input" class="form-control" value="30" min="0" step="1" />
+                                    </div>
+                                </div>
+                                <div class="form-group" id="supplier_opening_balance_group">
+                                    <label class="simple-check-label">
+                                        <input type="checkbox" id="supplier_opening_balance_confirm" />
+                                        Add a previous balance we already owe this supplier
+                                    </label>
+                                    <div id="supplier_opening_balance_fields" class="m-t-10" style="display:none;">
+                                        <label>Previous Opening Balance (PKR)</label>
+                                        <input type="number" step="0.01" min="0" id="supplier_opening_balance_input" class="form-control" placeholder="0.00" disabled />
+                                        <small class="text-muted">Only use this for debt from before Multi Medicos. It will create an accounting opening balance.</small>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Notes</label>
+                                    <textarea id="supplier_notes_input" class="form-control" rows="2" placeholder="Optional notes"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-success">Save Supplier</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL: SUPPLIER STATEMENT -->
+        <div id="modal_supplier_statement" class="modal fade modal-enterprise" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title"><i class="fa fa-file-text-o"></i> Supplier Account Statement</h4>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="stmt_filter_id" />
+                        <div class="statement-header">
+                            <div>
+                                <div class="statement-title" id="stmt_supplier_name">-</div>
+                                <div class="text-muted">Phone: <span id="stmt_supplier_phone">-</span></div>
+                            </div>
+                            <div class="statement-balance-box">
+                                <small>Current Outstanding Payable</small>
+                                <h4 id="stmt_supplier_balance">PKR 0.00</h4>
+                            </div>
+                        </div>
+                        <div class="row m-b-15">
+                            <div class="col-md-4">
+                                <input type="date" id="stmt_start_date" class="form-control input-sm" />
+                            </div>
+                            <div class="col-md-4">
+                                <input type="date" id="stmt_end_date" class="form-control input-sm" />
+                            </div>
+                            <div class="col-md-4">
+                                <button type="button" id="btn_filter_statement" class="btn btn-sm btn-info btn-block"><i class="fa fa-filter"></i> Filter Date</button>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="enterprise-table">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Ref #</th>
+                                        <th>Description</th>
+                                        <th class="text-right">Debit (Paid)</th>
+                                        <th class="text-right">Credit (Purchased)</th>
+                                        <th class="text-right">Running Payable</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="stmt_table_body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL: SUPPLIER PAYMENT -->
+        <div id="modal_supplier_payment" class="modal fade modal-enterprise" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <form id="form_supplier_payment">
+                        <input type="hidden" id="pay_supplier_id" />
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title"><i class="fa fa-money"></i> Record Supplier Payment</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h4>Supplier: <strong id="pay_supplier_name">-</strong></h4>
+                                    <p class="text-muted">Total Payable: <strong id="pay_supplier_balance" class="text-danger">PKR 0.00</strong></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Payment Amount (PKR) <span class="text-danger">*</span></label>
+                                        <input type="number" step="0.01" min="0.01" id="pay_amount_input" class="form-control input-lg font-weight-bold" required placeholder="0.00" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4 form-group">
+                                    <label>Payment Method</label>
+                                    <select id="pay_method_select" class="form-control">
+                                        <option value="cash">Cash (Updates Cashbook)</option>
+                                        <option value="bank">Bank Transfer</option>
+                                        <option value="easypaisa">Easypaisa</option>
+                                        <option value="jazzcash">JazzCash</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label>Reference # / Cheque #</label>
+                                    <input type="text" id="pay_ref_input" class="form-control" placeholder="e.g. Bank Ref / Cheque #" />
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label>Notes</label>
+                                    <input type="text" id="pay_notes_input" class="form-control" placeholder="Payment description" />
+                                </div>
+                            </div>
+                            <hr />
+                            <h5>Allocate to Unpaid Purchase Invoices (Optional)</h5>
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-condensed">
+                                    <thead>
+                                        <tr class="bg-light">
+                                            <th>Invoice #</th>
+                                            <th>Date</th>
+                                            <th>Total</th>
+                                            <th>Outstanding</th>
+                                            <th>Allocate Amount (PKR)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="pay_invoices_tbody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-success"><i class="fa fa-check"></i> Post Payment</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL: NEW PURCHASE -->
+        <div id="modal_new_purchase" class="modal fade modal-enterprise" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg purchase-modal-dialog">
+                <div class="modal-content">
+                    <form id="form_new_purchase">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title"><i class="fa fa-truck"></i> New Medicine Purchase</h4>
+                        </div>
+                        <div class="modal-body purchase-modal-body">
+                            <section class="purchase-section">
+                                <div class="purchase-section-heading"><span>1</span><div><strong>Purchase Information</strong><small>Who supplied these medicines?</small></div></div>
+                                <div class="row">
+                                    <div class="col-md-5 form-group">
+                                        <label>Supplier <span class="text-danger">*</span></label>
+                                        <div class="purchase-search-control" id="purchase_supplier_picker">
+                                            <input type="hidden" id="pur_supplier_select" />
+                                            <input type="text" id="pur_supplier_search" class="form-control" placeholder="Type supplier name or phone" autocomplete="off" />
+                                            <div id="pur_supplier_results" class="purchase-search-results" role="listbox"></div>
+                                        </div>
+                                        <button type="button" class="btn btn-link btn-xs purchase-inline-action" id="btn_purchase_add_supplier"><i class="fa fa-plus"></i> Add Supplier</button>
+                                    </div>
+                                    <div class="col-md-4 form-group">
+                                        <label>Invoice Number</label>
+                                        <div class="input-group">
+                                            <input type="text" id="pur_invoice_no" class="form-control" placeholder="Supplier invoice or internal reference" />
+                                            <span class="input-group-btn"><button type="button" class="btn btn-default" id="btn_generate_purchase_ref" title="Generate internal reference">Generate</button></span>
+                                        </div>
+                                        <small class="text-muted">Use Generate when the supplier has no invoice number.</small>
+                                    </div>
+                                    <div class="col-md-3 form-group">
+                                        <label>Purchase Date</label>
+                                        <input type="date" id="pur_date_input" class="form-control" required />
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section class="purchase-section">
+                                <div class="purchase-section-heading"><span>2</span><div><strong>Medicines</strong><small>Add each billed medicine and its batch details.</small></div></div>
+                                <div class="purchase-medicine-toolbar">
+                                    <div class="purchase-search-control purchase-medicine-search">
+                                        <input type="text" id="pur_medicine_search" class="form-control input-lg" placeholder="Search medicine name, category or SKU" autocomplete="off" />
+                                        <div id="pur_medicine_results" class="purchase-search-results" role="listbox"></div>
+                                    </div>
+                                    <button type="button" class="btn btn-default" id="btn_quick_add_medicine"><i class="fa fa-plus"></i> Add New Medicine</button>
+                                </div>
+                                <div id="purchase_items_empty" class="purchase-empty-state">
+                                    <i class="fa fa-medkit"></i>
+                                    <strong>No medicines added yet</strong>
+                                    <span>Search above and select a medicine.</span>
+                                </div>
+                                <div id="purchase_items_cards"></div>
+                                <button type="button" class="btn btn-link purchase-add-another" id="btn_add_purchase_row"><i class="fa fa-plus-circle"></i> Add Another Medicine</button>
+                            </section>
+
+                            <div class="row purchase-lower-grid">
+                                <div class="col-md-7">
+                                    <section class="purchase-section purchase-payment-section">
+                                        <div class="purchase-section-heading"><span>3</span><div><strong>Payment</strong><small>How much are you paying now?</small></div></div>
+                                        <div class="row">
+                                            <div class="col-sm-5 form-group">
+                                                <label>Payment Status</label>
+                                                <select id="pur_payment_mode" class="form-control">
+                                                    <option value="fully_paid">Fully Paid</option>
+                                                    <option value="partial">Partially Paid</option>
+                                                    <option value="unpaid">Unpaid / Udhaar</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-4 form-group" id="pur_paid_now_group" style="display:none;">
+                                                <label>Amount Paid (PKR)</label>
+                                                <input type="number" step="0.01" min="0" id="pur_paid_now" class="form-control" placeholder="0.00" />
+                                            </div>
+                                            <div class="col-sm-3 form-group">
+                                                <label>Method</label>
+                                                <select id="pur_pay_method" class="form-control">
+                                                    <option value="cash">Cash</option>
+                                                    <option value="bank">Bank</option>
+                                                    <option value="easypaisa">Easypaisa</option>
+                                                    <option value="jazzcash">JazzCash</option>
+                                                    <option value="other">Other</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Stock Posting</label>
+                                            <select id="pur_receiving_mode" class="form-control">
+                                                <option value="received">Receive into stock now</option>
+                                                <option value="draft">Save as draft — stock will not change</option>
+                                            </select>
+                                            <small class="text-muted">Received purchases update batches, stock and supplier accounts exactly once.</small>
+                                        </div>
+                                        <button type="button" class="btn btn-link supplier-advanced-toggle collapsed" data-toggle="collapse" data-target="#purchase_additional_details" aria-expanded="false">
+                                            <i class="fa fa-chevron-right"></i> Additional Details
+                                        </button>
+                                        <div id="purchase_additional_details" class="collapse supplier-additional-details">
+                                            <div class="row">
+                                                <div class="col-sm-5 form-group">
+                                                    <label>Payment Due Date</label>
+                                                    <input type="date" id="pur_due_date_input" class="form-control" />
+                                                </div>
+                                                <div class="col-sm-7 form-group">
+                                                    <label>Notes</label>
+                                                    <input type="text" id="pur_notes" class="form-control" placeholder="Optional notes" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+                                <div class="col-md-5">
+                                    <section class="purchase-section purchase-summary-section">
+                                        <div class="purchase-section-heading"><span>4</span><div><strong>Summary</strong><small>Calculated from billed quantities only.</small></div></div>
+                                        <div class="purchase-summary-row"><span>Purchase Total</span><strong>PKR <span id="pur_grand_total">0.00</span></strong></div>
+                                        <div class="purchase-summary-row"><span>Amount Paid</span><strong class="text-success">PKR <span id="pur_summary_paid">0.00</span></strong></div>
+                                        <div class="purchase-summary-row purchase-summary-balance"><span>Remaining Balance</span><strong>PKR <span id="pur_summary_remaining">0.00</span></strong></div>
+                                        <small>Bonus quantity increases stock but does not increase this invoice total.</small>
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-success btn-lg" id="btn_save_purchase"><i class="fa fa-save"></i> Save Purchase</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL: QUICK ADD MEDICINE FROM PURCHASE -->
+        <div id="modal_quick_medicine" class="modal fade modal-enterprise" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form id="form_quick_medicine">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title"><i class="fa fa-medkit"></i> Add New Medicine</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Medicine Name <span class="text-danger">*</span></label>
+                                <input type="text" id="quick_med_name" class="form-control input-lg" required placeholder="e.g. Panadol 500mg" />
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6 form-group">
+                                    <label>Selling Price (PKR) <span class="text-danger">*</span></label>
+                                    <input type="number" id="quick_med_selling_price" class="form-control" min="0" step="0.01" required placeholder="0.00" />
+                                </div>
+                                <div class="col-sm-6 form-group">
+                                    <label>Purchase Price (PKR) <span class="text-danger">*</span></label>
+                                    <input type="number" id="quick_med_cost_price" class="form-control" min="0" step="0.01" required placeholder="0.00" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6 form-group">
+                                    <label>SKU <small class="text-muted">(Optional)</small></label>
+                                    <input type="text" id="quick_med_sku" class="form-control" inputmode="numeric" placeholder="Auto-generated if blank" />
+                                </div>
+                                <div class="col-sm-6 form-group">
+                                    <label>Category <small class="text-muted">(Optional)</small></label>
+                                    <input type="text" id="quick_med_category" class="form-control" placeholder="e.g. Pain Relief" />
+                                </div>
+                            </div>
+                            <div class="quick-medicine-note"><i class="fa fa-info-circle"></i> Stock remains zero until this purchase is received. Enter batch and expiry on the purchase item.</div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-success" id="btn_save_quick_medicine">Save Medicine</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL: VIEW PURCHASE DETAILS -->
+        <div id="modal_view_purchase" class="modal fade modal-enterprise" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Purchase Details: <span id="vpur_invoice_no"></span></h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row m-b-15">
+                            <div class="col-md-4">
+                                <p>Supplier: <strong id="vpur_supplier"></strong></p>
+                                <p>Invoice Date: <strong id="vpur_date"></strong></p>
+                            </div>
+                            <div class="col-md-4">
+                                <p>Status: <span id="vpur_status" class="badge-status badge-received"></span></p>
+                                <p>Payment: <span id="vpur_payment_status" class="badge-status badge-paid"></span></p>
+                            </div>
+                            <div class="col-md-4 text-right">
+                                <p>Total: <strong id="vpur_total"></strong></p>
+                                <p>Paid: <span id="vpur_paid" class="text-success"></span></p>
+                                <p>Outstanding: <strong id="vpur_outstanding" class="text-danger"></strong></p>
+                            </div>
+                        </div>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr class="bg-light">
+                                    <th>Product</th>
+                                    <th>Batch #</th>
+                                    <th>Expiry</th>
+                                    <th>Quantity</th>
+                                    <th>Unit Cost</th>
+                                    <th>Line Total</th>
+                                </tr>
+                            </thead>
+                            <tbody id="vpur_items_tbody"></tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL: PURCHASE RETURN -->
+        <div id="modal_purchase_return" class="modal fade modal-enterprise" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form id="form_purchase_return">
+                        <input type="hidden" id="pret_purchase_id" />
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title"><i class="fa fa-reply"></i> Return Items to Supplier</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>Invoice: <strong id="pret_invoice_no"></strong> | Supplier: <strong id="pret_supplier"></strong></p>
+                            <div class="form-group">
+                                <label>Select Medicine Item to Return <span class="text-danger">*</span></label>
+                                <select id="pret_item_select" class="form-control" required></select>
+                            </div>
+                            <div class="form-group">
+                                <label>Return Quantity <span class="text-danger">*</span></label>
+                                <input type="number" min="1" id="pret_qty_input" class="form-control" required placeholder="Quantity to return" />
+                            </div>
+                            <div class="form-group">
+                                <label>Reason for Return</label>
+                                <textarea id="pret_reason_input" class="form-control" rows="2" placeholder="e.g. Damaged packing, near expiry, recall"></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-warning"><i class="fa fa-reply"></i> Post Purchase Return</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL: CUSTOMER STATEMENT -->
+        <div id="modal_customer_statement" class="modal fade modal-enterprise" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title"><i class="fa fa-book"></i> Customer Khata Statement</h4>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="cstmt_filter_id" />
+                        <div class="statement-header">
+                            <div>
+                                <div class="statement-title" id="cstmt_name">-</div>
+                                <div class="text-muted">Phone: <span id="cstmt_phone">-</span></div>
+                            </div>
+                            <div class="statement-balance-box">
+                                <small>Current Customer Receivable</small>
+                                <h4 id="cstmt_balance" class="text-danger">PKR 0.00</h4>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="enterprise-table">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Ref #</th>
+                                        <th>Description</th>
+                                        <th class="text-right">Debit (Credit Sale)</th>
+                                        <th class="text-right">Credit (Payment)</th>
+                                        <th class="text-right">Running Balance</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="cstmt_table_body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL: CUSTOMER PAYMENT (KHATA COLLECTION) -->
+        <div id="modal_customer_payment" class="modal fade modal-enterprise" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form id="form_customer_payment">
+                        <input type="hidden" id="cpay_cust_id" />
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title"><i class="fa fa-money"></i> Collect Customer Khata Payment</h4>
+                        </div>
+                        <div class="modal-body">
+                            <h4>Customer: <strong id="cpay_cust_name">-</strong></h4>
+                            <p>Current Balance: <strong id="cpay_cust_balance" class="text-danger">PKR 0.00</strong></p>
+                            <div class="form-group">
+                                <label>Payment Amount Received (PKR) <span class="text-danger">*</span></label>
+                                <input type="number" step="0.01" min="0.01" id="cpay_amount_input" class="form-control input-lg font-weight-bold" required placeholder="0.00" />
+                            </div>
+                            <div class="form-group">
+                                <label>Payment Method</label>
+                                <select id="cpay_method_select" class="form-control">
+                                    <option value="cash">Cash (Adds to Cashbook)</option>
+                                    <option value="bank">Bank Transfer</option>
+                                    <option value="easypaisa">Easypaisa</option>
+                                    <option value="jazzcash">JazzCash</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Reference #</label>
+                                <input type="text" id="cpay_ref_input" class="form-control" placeholder="Transaction or Receipt #" />
+                            </div>
+                            <div class="form-group">
+                                <label>Notes</label>
+                                <input type="text" id="cpay_notes_input" class="form-control" placeholder="Payment remarks" />
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-success"><i class="fa fa-check"></i> Record Collection</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL: ADD EXPENSE -->
+        <div id="modal_add_expense" class="modal fade modal-enterprise" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form id="form_add_expense">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title"><i class="fa fa-file-text-o"></i> Record Operating Expense</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Expense Category <span class="text-danger">*</span></label>
+                                <select id="exp_category_select" class="form-control" required></select>
+                            </div>
+                            <div class="form-group">
+                                <label>Amount (PKR) <span class="text-danger">*</span></label>
+                                <input type="number" step="0.01" min="0.01" id="exp_amount_input" class="form-control input-lg font-weight-bold" required placeholder="0.00" />
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label>Payment Method</label>
+                                    <select id="exp_method_select" class="form-control">
+                                        <option value="cash">Cash (Deducts from Cashbook)</option>
+                                        <option value="bank">Bank</option>
+                                        <option value="easypaisa">Easypaisa</option>
+                                        <option value="jazzcash">JazzCash</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label>Expense Date</label>
+                                    <input type="date" id="exp_date_input" class="form-control" required />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Description <span class="text-danger">*</span></label>
+                                <input type="text" id="exp_desc_input" class="form-control" required placeholder="e.g. September electricity bill, shop tea/refreshment" />
+                            </div>
+                            <div class="form-group">
+                                <label>Reference # / Bill #</label>
+                                <input type="text" id="exp_ref_input" class="form-control" placeholder="Optional bill or invoice #" />
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Save Expense</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="assets/dist/js/bundle.min.js"></script>
+    <script>
+        // Failsafe to dismiss splash screen if still visible after assets load
+        setTimeout(function () {
+            if (window.$) {
+                $('.splash, .loading').fadeOut(300);
+            } else {
+                var splash = document.querySelector('.splash');
+                if (splash) splash.style.display = 'none';
+            }
+        }, 2000);
+    </script>
+</body>
+
+</html>

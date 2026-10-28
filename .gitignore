@@ -1,0 +1,47 @@
+# Dependencies and package-manager diagnostics
+node_modules/
+*.log
+yarn-error.log
+npm-debug.log*
+
+# Environment files and credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.pfx
+
+# Pharmacy databases, SQLite journals, and private backups
+*.db
+*.db-*
+*.sqlite
+*.sqlite-*
+*.sqlite3
+*.sqlite3-*
+*.wal
+*.shm
+*.bak
+*backup*.zip
+backups/
+
+# Generated build, coverage, cache, and test output
+out/
+release/
+release-builds/
+coverage/
+.cache/
+.electron/
+temp_pkg_test_appdata/
+*.partial
+
+# Local editor and operating-system files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+Desktop.ini
+notes.txt
+TODO
+*.old
+*.old.*

@@ -1,0 +1,149 @@
+{
+  "name": "PharmaSpot",
+  "productName": "Multi Medicos",
+  "version": "1.5.5",
+  "description": "Pharmacy Management System",
+  "author": "Muhammad Saad Saeed (Multi Medicos customization); PharmaSpot contributors",
+  "homepage": "https://github.com/SAADSAEED007/muti-medicos",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAADSAEED007/muti-medicos.git"
+  },
+  "credits": "electronjs.org",
+  "license": "MIT",
+  "private": true,
+  "engines": {
+    "node": ">=24"
+  },
+  "main": "start.js",
+  "build": {
+    "appId": "com.patternsdigital.pharmaspot",
+    "productName": "Multi Medicos",
+    "directories": {
+      "buildResources": "assets"
+    }
+  },
+  "dependencies": {
+    "@electron/asar": "^3.2.7",
+    "@electron/remote": "^2.0.9",
+    "archiver": "^7.0.1",
+    "async": "^3.2.4",
+    "bcrypt": "npm:bcryptjs@^2.4.3",
+    "body-parser": "^2.3.0",
+    "dompurify": "^3.4.16",
+    "electron-context-menu": "^3.6.1",
+    "electron-squirrel-startup": "^1.0.0",
+    "electron-store": "^8.1.0",
+    "electron-updater": "^6.8.9",
+    "express": "^5.2.1",
+    "express-fileupload": "^1.4.0",
+    "express-rate": "^0.0.1",
+    "express-rate-limit": "^6.7.0",
+    "html2canvas": "^1.4.1",
+    "http": "0.0.0",
+    "https": "^1.0.0",
+    "is-port-reachable": "^4.0.0",
+    "jquery": "^3.6.3",
+    "jsbarcode": "^3.11.5",
+    "jspdf": "^4.2.1",
+    "lodash": "^4.17.24",
+    "macaddress": "^0.5.3",
+    "moment": "^2.31.0",
+    "multer": "^2.4.0",
+    "notiflix": "^3.2.5",
+    "print-js": "^1.6.0",
+    "sanitize": "^2.1.2",
+    "sanitize-filename": "^1.6.3",
+    "socket.io": "^4.8.1",
+    "unzipper": "^0.12.3",
+    "up": "^1.0.2",
+    "validator": "^13.15.23",
+    "xmlhttprequest": "^1.8.0"
+  },
+  "overrides": {
+    "@malept/cross-spawn-promise": "1.1.1",
+    "electron-installer-common": {
+      "glob": "^7.2.3"
+    },
+    "immutable": "3.8.4",
+    "socket.io-parser": "^4.2.7",
+    "tar": "^7.5.11",
+    "node-abi": "^4.28.0",
+    "@xmldom/xmldom": "^0.8.12",
+    "terser": "^5.39.2",
+    "@tootallnate/once": "^3.0.1",
+    "@octokit/plugin-paginate-rest": "^9.2.2",
+    "@octokit/request": "^8.4.1",
+    "@octokit/request-error": "^5.1.1"
+  },
+  "resolutions": {
+    "@malept/cross-spawn-promise": "1.1.1",
+    "electron-installer-common/glob": "^7.2.3",
+    "immutable": "3.8.4",
+    "socket.io-parser": "^4.2.7",
+    "tar": "^7.5.11",
+    "node-abi": "^4.28.0",
+    "@xmldom/xmldom": "^0.8.12",
+    "terser": "^5.39.2",
+    "@tootallnate/once": "^3.0.1",
+    "@octokit/plugin-paginate-rest": "^9.2.2",
+    "@octokit/request": "^8.4.1",
+    "@octokit/request-error": "^5.1.1",
+    "brace-expansion": "^2.0.3",
+    "dompurify": "^3.4.16",
+    "follow-redirects": "^1.15.11",
+    "lodash": "^4.17.24",
+    "multer": "^2.4.0",
+    "picomatch": "^2.3.2",
+    "electron": "^43.7.5"
+  },
+  "scripts": {
+    "electron": "cross-env NODE_ENV=dev nodemon --exec \"\"electron .\"\"",
+    "electron-build": "electron-builder",
+    "package-win": "electron-forge make --platform=win32 --arch=x64 --targets @electron-forge/maker-squirrel",
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make",
+    "make:win": "electron-forge make --platform=win32 --arch=x64 --targets @electron-forge/maker-squirrel",
+    "publish": "electron-forge publish",
+    "test": "jest"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@electron-forge/cli": "^8.0.1",
+    "@electron-forge/maker-squirrel": "^8.0.1",
+    "@electron-forge/publisher-github": "^8.0.1",
+    "browser-sync": "^3.0.3",
+    "cross-env": "^7.0.3",
+    "electron": "^43.7.5",
+    "electron-is-dev": "^2.0.0",
+    "electron-log": "^4.4.8",
+    "electron-reloader": "^1.2.3",
+    "electron-updater-yaml": "^1.1.2",
+    "gulp": "^5.0.0",
+    "gulp-clean-css": "^4.3.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-javascript-obfuscator": "^1.1.6",
+    "gulp-minify": "^3.0.0",
+    "gulp-purgecss": "^8.0.0",
+    "gulp-rename": "^2.0.0",
+    "gulp-uglify": "^3.0.2",
+    "jest": "^29.7.0",
+    "merge-stream": "^2.0.0",
+    "node-gyp": "^13.0.2",
+    "nodemon": "^3.0.1",
+    "path": "^0.12.7",
+    "ts-node": "^10.9.2"
+  }
+}
